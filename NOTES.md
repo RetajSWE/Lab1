@@ -15,7 +15,7 @@ For each one record: example, why it matters, and clean/preserve/task-dependent.
 ### Defect 2
 
 * Class: Tatweel
-* Example: `مــــرحبا` or Arabic text containing the tatweel character `ـ`
+* Example: `لووووسمحت`
 * Why it matters: Tatweel is mainly decorative and does not usually add semantic meaning, so it can create unnecessary variation in the text.
 * Decision: Clean
 
