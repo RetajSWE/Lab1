@@ -14,7 +14,20 @@ def normalize(text: str) -> str:
 
     # 1. Unicode normalization
     text = unicodedata.normalize("NFKC", text)
+def mask_pii(text: str) -> str:
+    """Mask supported phone numbers and Saudi national-ID-shaped values."""
 
+    # Saudi phone numbers:
+    # 0551234567
+    # +966551234567
+    # 966551234567
+    text = re.sub(r"(?:\+?9665\d{8}|05\d{8})", "<PHONE>", text)
+
+    # Saudi national-ID-shaped values:
+    # 10 digits starting with 1 or 2
+    text = re.sub(r"\b[12]\d{9}\b", "<NATIONAL_ID>", text)
+
+    return text
     # 2. Remove Tatweel / Kashida
     text = text.replace("ـ", "")
 
