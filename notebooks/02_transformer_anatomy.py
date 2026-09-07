@@ -75,4 +75,33 @@ def main():
                               v[:, :, :seq_len, :],
                               causal_mask)
 
-    causal_scores = torch.matmul
+    causal_scores = torch.matmul(
+        q[:, :, :seq_len, :],
+        k[:, :, :seq_len, :].transpose(-2, -1)
+    ) / (q.size(-1) ** 0.5)
+
+    causal_scores = causal_scores.masked_fill(
+        ~causal_mask, float("-inf")
+    )
+
+    causal_weights = F.softmax(causal_scores, dim=-1)
+
+    print("\n4. Causal masking")
+    print("   Attention matrix:")
+    print(causal_weights[0, 0])
+
+    upper_triangle = torch.triu(causal_weights, diagonal=1)
+
+    assert torch.allclose(
+        upper_triangle,
+        torch.zeros_like(upper_triangle),
+        atol=1e-6
+    )
+
+    print("   Future-token attention blocked: PASS")
+
+    print("\nLab 2 Step 2 completed successfully.")
+
+
+if __name__ == "__main__":
+    main()
