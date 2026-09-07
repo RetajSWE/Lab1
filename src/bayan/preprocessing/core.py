@@ -1,26 +1,32 @@
-"""Lab 1 starter: versioned bilingual preprocessing for Bayan."""
-
 import re
 import unicodedata
 
 
 PREPROC_VERSION = "1.2.0"
 
+_TATWEEL = "ـ"
+
+_PHONE_RE = re.compile(r"(?:\+?966|0)5\d{8}")
+_NATIONAL_ID_RE = re.compile(r"\b[12]\d{9}\b")
+
+_MULTISPACE_RE = re.compile(r"\s+")
+_REPEAT_RE = re.compile(r"(.)\1{2,}")
+
 
 def normalize(text: str) -> str:
     """Return deterministic Bayan normalisation while preserving task signal."""
 
-    # 1. Unicode normalization
-    text = unicodedata.normalize("NFKC", text)
+    # 1) Unicode normalization
+    text = unicodedata.normalize("NFC", text)
 
-    # 2. Remove Tatweel / Kashida
-    text = text.replace("ـ", "")
+    # 2) Remove tatweel
+    text = text.replace(_TATWEEL, "")
 
-    # 3. Reduce repeated characters / punctuation to at most 2
-    text = re.sub(r"(.)\1{2,}", r"\1\1", text)
+    # 3) Collapse repeated characters to maximum 2
+    text = _REPEAT_RE.sub(r"\1\1", text)
 
-    # 4. Normalize whitespace
-    text = re.sub(r"\s+", " ", text).strip()
+    # 4) Normalize whitespace
+    text = _MULTISPACE_RE.sub(" ", text).strip()
 
     return text
 
@@ -28,23 +34,8 @@ def normalize(text: str) -> str:
 def mask_pii(text: str) -> str:
     """Mask supported phone numbers and Saudi national-ID-shaped values."""
 
-    # Saudi phone numbers:
-    # 0551234567
-    # +966551234567
-    # 966551234567
-    text = re.sub(
-        r"(?:\+?9665\d{8}|05\d{8})",
-        "<PHONE>",
-        text,
-    )
-
-    # Saudi national-ID-shaped values:
-    # 10 digits starting with 1 or 2
-    text = re.sub(
-        r"\b[12]\d{9}\b",
-        "<NATIONAL_ID>",
-        text,
-    )
+    text = _PHONE_RE.sub("<PHONE>", text)
+    text = _NATIONAL_ID_RE.sub("<NATIONAL_ID>", text)
 
     return text
 
@@ -52,8 +43,4 @@ def mask_pii(text: str) -> str:
 def preprocess(text: str) -> str:
     """Apply the shared train/eval/serve preprocessing contract."""
 
-    # First normalize the text, then mask PII.
-    text = normalize(text)
-    text = mask_pii(text)
-
-    return text
+    return normalize(mask_pii(text))
