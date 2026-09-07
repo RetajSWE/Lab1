@@ -49,12 +49,14 @@ For each one record: example, why it matters, and clean/preserve/task-dependent.
 
 ## Lab 2 — Parameter audit
 
-| Checkpoint | Total params | Embeddings % | Other notes |
-| ---------- | -----------: | -----------: | ----------- |
-| mBERT      |              |              |             |
-| CAMeLBERT  |              |              |             |
+| Checkpoint | Total params | Embeddings % | Other notes                                                                                                                 |
+| ---------- | -----------: | -----------: | --------------------------------------------------------------------------------------------------------------------------- |
+| mBERT      |  177,853,440 |       51.85% | 92,208,384 embedding params; 28,366,848 attention params; 56,669,184 FFN params; 18,432 norm params; 590,592 pooler params. |
+| CAMeLBERT  |  109,081,344 |       21.49% | 23,436,288 embedding params; 28,366,848 attention params; 56,669,184 FFN params; 18,432 norm params; 590,592 pooler params. |
 
-## Lab 4 — Dialect audit
+### Embedding share explanation
+
+The embedding share is different because mBERT is multilingual and uses a much larger vocabulary, so its embedding layer contains substantially more parameters than the Arabic-focused CAMeLBERT model.
 
 * Distribution:
 * One-sentence implication for MSA-only evaluation:
