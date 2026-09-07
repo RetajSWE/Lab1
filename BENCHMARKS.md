@@ -11,9 +11,8 @@
 | CAMeLBERT  |         1.41 |         2.70 |         20 |         38 | **--------** |
 | DistilBERT |         4.53 |         1.30 |         47 |         21 | **--------** |
 
-- Golden preprocessing: ___ / 25 passed
-- PII masking recall: ___ / 60 = ___%
-
+- Golden preprocessing: 8 / 25 passed
+- PII masking recall: 60 / 60 = 100%
 ## Lab 3 — Models
 | Model | Metric | Validation | Frozen test | Train time |
 |---|---|---:|---:|---:|
