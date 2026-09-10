@@ -1,4 +1,10 @@
-https://github.com/RetajSWE/Nextstep-SDAIA
+Course Information This project was developed as part of:
+NLP Course
+SDAIA Academy 6-10 Sep, 2026
+
+SDAIA Academy GitHub:
+
+https://github.com/SDAIAAcademy
 # Bayan | بيان
 
 ### SDA-AIE-211 — NLP with Transformers
